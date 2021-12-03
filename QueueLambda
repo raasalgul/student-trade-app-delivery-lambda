@@ -1,0 +1,21 @@
+import boto3
+import json
+
+def lambda_handler(event, context):
+
+    client = boto3.client("sns")
+    print(event)
+    inputMessage=event['Records'][0]['body']
+    print(inputMessage)
+    msg=json.loads(inputMessage)
+    print(msg)
+    # print(event["number"])
+    # print(event["message"])
+    arn="arn:aws:sns:us-east-1:502627615657:testSns"
+    client.subscribe(
+            TopicArn=arn,
+            Protocol='sms',
+            Endpoint=msg["number"]
+        )
+
+    client.publish(Message=msg["message"], TopicArn=arn)
