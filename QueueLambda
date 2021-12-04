@@ -1,5 +1,6 @@
 import boto3
 import json
+from boto3.dynamodb.conditions import Key
 
 def lambda_handler(event, context):
 
@@ -7,16 +8,33 @@ def lambda_handler(event, context):
     dynamodb_resource = boto3.resource("dynamodb", region_name='us-east-1')
     deliveryPerson_table_name='deliveryInfo_table'
     userInfo_table_name='dublinStudentApp_UserInfo'
-    postInfo_table_name='postInfo_OldProducts_Table'
-    verifiedUser_table_name='nci-trade-app-validated-user'
+    postInfo_hash_table_name='postInfo_hashTable'
+    #verifiedUser_table_name='nci-trade-app-validated-user'
     inputMessage=event['Records'][0]['body']
     msg=json.loads(inputMessage)
     productHash=msg["productHash"]
     userEmail=msg["requesterEmail"]
     deliveryPerson_table = dynamodb_resource.Table(deliveryPerson_table_name)
     deliveryPerson_table_result=deliveryPerson_table.scan()['Items']
+    deliveryCount=2147483647
+    personToDeliver={}
     for person in deliveryPerson_table_result:
-        print(person.delivery)
+        if(person['delivery_count']<deliveryCount):
+            deliveryCount=person['delivery_count']
+            personToDeliver=person
+    deliveryCount=2147483647
+    # print(personToDeliver['delivery_count'])
+    # print(personToDeliver['phone Number'])
+    
+    message=""
+    postInfo_hash_table = dynamodb_resource.Table(postInfo_hash_table_name)
+    postInfo_hashTable_result=postInfo_hash_table.query(
+                KeyConditionExpression = Key("hash").eq(productHash))['Items'][0]
+    print(postInfo_hashTable_result)
+    # Get product Id, product Name, pickup location, delivery location
+    
+    
+    
     # print(event["number"])
     # print(event["message"])
     
