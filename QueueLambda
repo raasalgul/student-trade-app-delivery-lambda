@@ -4,18 +4,38 @@ import json
 def lambda_handler(event, context):
 
     client = boto3.client("sns")
-    print(event)
+    dynamodb_resource = boto3.resource("dynamodb", region_name='us-east-1')
+    deliveryPerson_table_name='deliveryInfo_table'
+    userInfo_table_name='dublinStudentApp_UserInfo'
+    postInfo_table_name='postInfo_OldProducts_Table'
+    verifiedUser_table_name='nci-trade-app-validated-user'
     inputMessage=event['Records'][0]['body']
-    print(inputMessage)
     msg=json.loads(inputMessage)
-    print(msg)
+    productHash=msg["productHash"]
+    userEmail=msg["requesterEmail"]
+    deliveryPerson_table = dynamodb_resource.Table(deliveryPerson_table_name)
+    deliveryPerson_table_result=deliveryPerson_table.scan()['Items']
+    for person in deliveryPerson_table_result:
+        print(person.delivery)
     # print(event["number"])
     # print(event["message"])
-    arn="arn:aws:sns:us-east-1:502627615657:testSns"
-    client.subscribe(
-            TopicArn=arn,
-            Protocol='sms',
-            Endpoint=msg["number"]
-        )
+    
 
-    client.publish(Message=msg["message"], TopicArn=arn)
+
+
+
+
+
+
+
+
+
+
+    # arn="arn:aws:sns:us-east-1:502627615657:testSns"
+    # client.subscribe(
+    #         TopicArn=arn,
+    #         Protocol='sms',
+    #         Endpoint=msg["number"]
+    #     )
+
+    # client.publish(Message=msg["message"], TopicArn=arn)
