@@ -7,7 +7,7 @@ def lambda_handler(event, context):
     client = boto3.client("sns")
     dynamodb_resource = boto3.resource("dynamodb", region_name='us-east-1')
     deliveryPerson_table_name='deliveryInfo_table'
-    userInfo_table_name='dublinStudentApp_UserInfo'
+    userInfo_table_name='nci-trade-app-userInfo'
     postInfo_hash_table_name='postInfo_hashTable'
     #verifiedUser_table_name='nci-trade-app-validated-user'
     inputMessage=event['Records'][0]['body']
@@ -30,7 +30,15 @@ def lambda_handler(event, context):
     postInfo_hash_table = dynamodb_resource.Table(postInfo_hash_table_name)
     postInfo_hashTable_result=postInfo_hash_table.query(
                 KeyConditionExpression = Key("hash").eq(productHash))['Items'][0]
-    print(postInfo_hashTable_result)
+    print(postInfo_hashTable_result['email'])
+    
+    
+    userInfo_table=dynamodb_resource.Table(userInfo_table_name)
+    senderAddress=userInfo_table.query(
+                KeyConditionExpression = Key("email").eq(postInfo_hashTable_result['email']))['Items'][0]
+    
+    receiverAddress=userInfo_table_name.query(
+                KeyConditionExpression = Key("email").eq(userEmail))['Items'][0]
     # Get product Id, product Name, pickup location, delivery location
     
     
