@@ -26,7 +26,6 @@ def lambda_handler(event, context):
     # print(personToDeliver['delivery_count'])
     # print(personToDeliver['phone Number'])
     
-    message=""
     postInfo_hash_table = dynamodb_resource.Table(postInfo_hash_table_name)
     postInfo_hashTable_result=postInfo_hash_table.query(
                 KeyConditionExpression = Key("hash").eq(productHash))['Items'][0]
@@ -34,34 +33,29 @@ def lambda_handler(event, context):
     
     
     userInfo_table=dynamodb_resource.Table(userInfo_table_name)
-    senderAddress=userInfo_table.query(
-                KeyConditionExpression = Key("email").eq(postInfo_hashTable_result['email']))['Items'][0]
+    senderEmail=postInfo_hashTable_result['email']
     
-    receiverAddress=userInfo_table_name.query(
-                KeyConditionExpression = Key("email").eq(userEmail))['Items'][0]
+    senderAddress=userInfo_table.query(
+                KeyConditionExpression = Key("email")
+                .eq(senderEmail))['Items'][0]['address']
+    
+    receiverAddress=userInfo_table.query(
+                KeyConditionExpression = Key("email")
+                .eq(userEmail))['Items'][0]['address']
     # Get product Id, product Name, pickup location, delivery location
     
+    print(senderAddress)
+    print(receiverAddress)
     
+    message="Owner email is \""+senderEmail+"\" and address to pick-up is \""+senderAddress+"\". Receiver email is \""+userEmail+"\" and address to delivery is \""+receiverAddress+"\"."
     
-    # print(event["number"])
-    # print(event["message"])
-    
+    print(message)
+ 
+    arn="arn:aws:sns:us-east-1:502627615657:testSns"
+    client.subscribe(
+            TopicArn=arn,
+            Protocol='sms',
+            Endpoint=personToDeliver['phone Number']
+        )
 
-
-
-
-
-
-
-
-
-
-
-    # arn="arn:aws:sns:us-east-1:502627615657:testSns"
-    # client.subscribe(
-    #         TopicArn=arn,
-    #         Protocol='sms',
-    #         Endpoint=msg["number"]
-    #     )
-
-    # client.publish(Message=msg["message"], TopicArn=arn)
+    client.publish(Message=message, TopicArn=arn)
