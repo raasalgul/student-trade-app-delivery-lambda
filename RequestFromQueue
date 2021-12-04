@@ -1,0 +1,20 @@
+{
+  "Records": [
+    {
+      "messageId": "86e2a1e0-419d-4449-9841-577ebc042ac0",
+      "receiptHandle": "AQEB4wifoOvqQ8udi7UDIU6sr/xrBFuB2DfBtY+lSKkZUirvyE09nHltJiCUvz76KxE9KJzG09emhrOUR84ffkm6CywQO8UHttYjEKHamq0OcU+niJyBtGTAkaMPBTRk7XodM9hBfAcsYOuDEOP0LpFpisFcYyeEi2MGDxO1EJzhfm17xcC02tfw7g+uxF/PH6TyLNqcN4JjMweRrzeU3dsvoSGMahVAeDLUK5PF7cU57ly2LFZFujYovspRPOsvIZ28syanJ+Bm7r2N2S07NDsBJV0jZOhHRPI1eCLfEXc/BIn7wzMqdMa5pHUoN0xN9J8QIzYAPizgv/JOoP4hnY3gez2JTF4CpideBfajqCg8/9+vpphdpfdHrRdMkUog/OqYDAdxoGePgHOUZc1jjl9qtQ==",
+      "body": "{\"productHash\": \"aa0d4625045ed8d79d72e4affd8b175a544e3c2259c6ecfc3d04417e\",\"requesterEmail\":\"k.sathishrsurya@gmail.com\"}",
+      "attributes": {
+        "ApproximateReceiveCount": "1",
+        "SentTimestamp": "1638569062243",
+        "SenderId": "AROAXKBXQYOU6CSQBWZOH:user1638932=x20208057@student.ncirl.ie",
+        "ApproximateFirstReceiveTimestamp": "1638569062257"
+      },
+      "messageAttributes": {},
+      "md5OfBody": "ea955e697763fdbbbd9068a14a89c0c0",
+      "eventSource": "aws:sqs",
+      "eventSourceARN": "arn:aws:sqs:us-east-1:502627615657:lambdaTrigger1",
+      "awsRegion": "us-east-1"
+    }
+  ]
+}
